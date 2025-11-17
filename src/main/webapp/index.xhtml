@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+    <h:head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Проверка попадания точки</title>
+        <link rel="stylesheet" href="resources/styles/styles.css"/>
+    </h:head>
+
+    <h:body>
+        <header id="header">
+            <div class="wrap">
+                <h1>Жеребцов Михаил Александрович — Группа P3217 — Вариант 3910</h1>
+            </div>
+        </header>
+
+        <main class="wrap">
+            <section class="panel">
+                <h2>Интерактивные часы</h2>
+                <div class="clock-panel-body">
+                    <div>Текущие дата и время (обновление раз в 11 секунд):</div>
+                    <div class="clock-time">
+                        <h:outputText id="clock" value="#{clockBean.now}" />
+                        <p:poll interval="11" update="clock"/>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h:link outcome="nextPage" styleClass="app-link">
+                    Перейти к основной странице приложения
+                </h:link>
+            </section>
+        </main>
+
+    </h:body>
+</f:view>
+
+</html>

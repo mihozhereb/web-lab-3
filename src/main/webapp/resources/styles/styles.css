@@ -1,0 +1,248 @@
+:root{
+  --accent:#2b74ff;
+  --accent-weak:rgba(43,116,255,.12);
+  --border:#d7dbe2;
+  --text:#1f2430;
+  --muted:#6b7280;
+  --bg:#f7f9fc;
+  --panel:#ffffff;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#fff;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+
+#header{
+  background:linear-gradient(90deg,#4f46e5,#3b82f6,#06b6d4);
+  color:#fff;
+}
+#header .wrap{padding-block:18px}
+#header h1{margin:0;font-size:20px;font-weight:700;text-align: center}
+
+.clock-panel-body {
+    text-align: center;
+    font-size: 18px;
+}
+.clock-time {
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 8px;
+}
+.app-link {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    background: #f8fafc;
+    transition: background .15s;
+}
+.app-link:hover {
+    background: #eef2ff;
+}
+
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+  margin-block:16px;
+}
+
+/* FLEX-layout: график слева, форма справа */
+.layout{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;            /* адаптивность */
+}
+.layout > .panel{
+  flex:1 1 420px;            /* мин ширина, остальное растягивается */
+}
+
+/* заголовки секций */
+.panel h2{margin:0 0 12px 0;font-size:18px;font-weight:700;text-align:center}
+
+/* SVG-область в карточке */
+.area-figure{
+  margin:0;
+  padding:16px;
+  border:1px dashed var(--border);
+  border-radius:12px;
+  background:var(--bg);
+}
+.area-svg{
+  display:block;
+  margin:0 auto;
+  max-width:560px;
+  width:100%;
+  height:auto;
+}
+
+/* форма */
+#pointForm{display:flex;flex-direction:column;gap:12px}
+.form-row{display:flex;gap:12px;align-items:flex-start}
+.form-row > label{
+  width:48px; text-align:right; padding-top:6px; font-weight:600;
+}
+.form-row > input[type="text"]{
+  flex:1;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  outline:none;
+  transition:border-color .15s, box-shadow .15s;
+}
+.form-row > input[type="text"]:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-weak);
+}
+#pointForm select,
+#pointForm input[type="text"]{
+  flex:1;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  outline:none;
+  transition:border-color .15s, box-shadow .15s;
+}
+#pointForm select:focus,
+#pointForm input[type="text"]:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-weak);
+}
+
+/* кнопки */
+.form-actions{display:flex;gap:10px;justify-content:flex-end}
+form#pointForm input.btn,
+.btn {
+    color: #000000;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: background .15s, transform .02s;
+    font-family: inherit;
+    font-size: 14px;
+}
+form#pointForm input.btn:hover,
+.btn:hover {
+    background: #eef2ff;
+}
+form#pointForm input.btn:active,
+.btn:active {
+    transform: translateY(1px);
+}
+form#pointForm input.btn:focus {
+    box-shadow: none;
+}
+
+/* таблица истории */
+.table-wrap{overflow:auto}
+.table{
+  width:100%; border-collapse:collapse; table-layout:fixed;
+}
+.table th,.table td{
+  border:1px solid var(--border);
+  padding:10px; text-align:center; white-space:nowrap;
+}
+.table thead th{background:#f3f4f6;font-weight:700}
+.table tbody tr:nth-child(odd){background:#fafafa}
+.table tbody tr:hover{background:#f0f6ff}
+.history-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+#clearHistoryBtn {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+  border-radius: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.05s;
+}
+#clearHistoryBtn:hover {
+  background: #fee2e2;
+}
+#clearHistoryBtn:active {
+  transform: translateY(1px);
+}
+
+/* доступность */
+.visually-hidden{
+  position:absolute !important; height:1px;width:1px;overflow:hidden;
+  clip:rect(1px,1px,1px,1px);
+}
+
+/* адаптив */
+@media (max-width:640px){
+  .form-row{flex-direction:column}
+  .form-row > label{width:auto;text-align:left;padding-top:0}
+}
+
+.is-invalid {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+}
+
+.error-msg {
+  color: #ef4444;
+  font-size: 13px;
+  margin-top: 4px;
+  min-height: 1.2em;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.form-row > h\:outputLabel {
+  width: 40px;
+  font-weight: 500;
+}
+
+.y-range {
+  flex: 1;
+}
+
+.y-value {
+  width: 60px;
+  text-align: right;
+  border: none;
+  background: transparent;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+form#clearForm input.btn-clear {
+    padding: 8px 16px;
+    font-size: 14px;
+    background: #3b82f6;            /* синий */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 2px 5px rgba(59, 130, 246, 0.25);
+}
+
+form#clearForm input.btn-clear:hover {
+    background: #2563eb;            /* темнее */
+}
+
+form#clearForm input.btn-clear:active {
+    transform: translateY(1px);
+}
+
+form#clearForm input.btn-clear:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
