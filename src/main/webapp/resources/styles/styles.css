@@ -52,20 +52,17 @@ html,body{margin:0;padding:0;background:#fff;color:var(--text);
   margin-block:16px;
 }
 
-/* FLEX-layout: график слева, форма справа */
 .layout{
   display:flex;
   gap:16px;
-  flex-wrap:wrap;            /* адаптивность */
+  flex-wrap:wrap;
 }
 .layout > .panel{
-  flex:1 1 420px;            /* мин ширина, остальное растягивается */
+  flex:1 1 420px;
 }
 
-/* заголовки секций */
 .panel h2{margin:0 0 12px 0;font-size:18px;font-weight:700;text-align:center}
 
-/* SVG-область в карточке */
 .area-figure{
   margin:0;
   padding:16px;
@@ -81,7 +78,6 @@ html,body{margin:0;padding:0;background:#fff;color:var(--text);
   height:auto;
 }
 
-/* форма */
 #pointForm{display:flex;flex-direction:column;gap:12px}
 .form-row{display:flex;gap:12px;align-items:flex-start}
 .form-row > label{
@@ -114,7 +110,6 @@ html,body{margin:0;padding:0;background:#fff;color:var(--text);
   box-shadow:0 0 0 4px var(--accent-weak);
 }
 
-/* кнопки */
 .form-actions{display:flex;gap:10px;justify-content:flex-end}
 form#pointForm input.btn,
 .btn {
@@ -140,7 +135,6 @@ form#pointForm input.btn:focus {
     box-shadow: none;
 }
 
-/* таблица истории */
 .table-wrap{overflow:auto}
 .table{
   width:100%; border-collapse:collapse; table-layout:fixed;
@@ -173,13 +167,11 @@ form#pointForm input.btn:focus {
   transform: translateY(1px);
 }
 
-/* доступность */
 .visually-hidden{
   position:absolute !important; height:1px;width:1px;overflow:hidden;
   clip:rect(1px,1px,1px,1px);
 }
 
-/* адаптив */
 @media (max-width:640px){
   .form-row{flex-direction:column}
   .form-row > label{width:auto;text-align:left;padding-top:0}
@@ -225,7 +217,7 @@ form#pointForm input.btn:focus {
 form#clearForm input.btn-clear {
     padding: 8px 16px;
     font-size: 14px;
-    background: #3b82f6;            /* синий */
+    background: #3b82f6;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -235,7 +227,7 @@ form#clearForm input.btn-clear {
 }
 
 form#clearForm input.btn-clear:hover {
-    background: #2563eb;            /* темнее */
+    background: #2563eb;
 }
 
 form#clearForm input.btn-clear:active {

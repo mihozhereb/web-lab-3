@@ -13,21 +13,17 @@
         </h:head>
 
         <h:body>
-            <!-- Шапка -->
             <header id="header">
                 <div class="wrap">
-                    <h1>Жеребцов Михаил Александрович — Группа P3217 — Вариант 2209</h1>
+                    <h1>Жеребцов Михаил Александрович — Группа P3217 — Вариант 3910</h1>
                 </div>
             </header>
 
-            <!-- Основной контент: график + форма -->
             <main class="wrap">
                 <section class="layout">
-                    <!-- Левая колонка: график -->
                     <div class="panel">
                         <h2>Область</h2>
 
-                        <!-- Инлайн-SVG -->
                         <h:form id="areaSvg">
                             <figure class="area-figure">
                                 <svg id="svgInput" class="area-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="График области">
@@ -40,38 +36,27 @@
                                         </style>
                                     </defs>
 
-                                    <!-- Новая область: сектор (III, радиус R/2), прямоугольник (I), треугольник (IV) -->
                                     <g>
-                                        <!-- Прямоугольник в I квадранте: 0..R по x, 0..R/2 по y -->
-                                        <!-- при нашей разметке: центр (200,200), R=120px, R/2=60px -->
                                         <rect class="region" x="80" y="200" width="120" height="60"/>
 
-                                        <!-- Треугольник в IV: (0,0)→(R,0)→(R,-R/2) -->
                                         <polygon class="region" points="200,200 320,200 200,80"/>
 
-                                        <!-- Сектор круга в III: радиус R/2 -->
-                                        <!-- дуга от (200,260) до (140,200) с центром (200,200) -->
                                         <path class="region" d="M200,200 L140,200 A60,60 0 0 1 200,140 Z"/>
                                     </g>
 
-                                    <!-- Оси -->
                                     <g>
-                                        <!-- X -->
                                         <line class="axis" x1="20" y1="200" x2="380" y2="200"/>
                                         <path class="axis" d="M380,200 l-8,-4 l0,8 Z"/>
                                         <text class="label" x="388" y="205">x</text>
-                                        <!-- Y -->
                                         <line class="axis" x1="200" y1="380" x2="200" y2="20"/>
                                         <path class="axis" d="M200,20 l-4,8 l8,0 Z"/>
                                         <text class="label" x="205" y="16">y</text>
 
-                                        <!-- Тики/подписи по X -->
                                         <line class="tick" x1="80"  y1="195" x2="80"  y2="205"/><text class="label" x="72"  y="222">-R</text>
                                         <line class="tick" x1="140" y1="195" x2="140" y2="205"/><text class="label" x="120" y="222">-R/2</text>
                                         <line class="tick" x1="260" y1="195" x2="260" y2="205"/><text class="label" x="246" y="222">R/2</text>
                                         <line class="tick" x1="320" y1="195" x2="320" y2="205"/><text class="label" x="314" y="222">R</text>
 
-                                        <!-- Тики/подписи по Y -->
                                         <line class="tick" x1="195" y1="80"  x2="205" y2="80"/><text class="label" x="210" y="84">R</text>
                                         <line class="tick" x1="195" y1="140" x2="205" y2="140"/><text class="label" x="210" y="144">R/2</text>
                                         <line class="tick" x1="195" y1="260" x2="205" y2="260"/><text class="label" x="210" y="264">-R/2</text>
@@ -95,13 +80,10 @@
                         </h:form>
                     </div>
 
-                    <!-- Правая колонка: форма -->
                     <div class="panel">
                         <h2>Проверка точки</h2>
 
                         <h:form id="pointForm">
-
-                            <!-- X: inputText (-3 … 3) -->
                             <div class="form-row">
                                 <h:outputLabel for="x" value="X:"/>
                                 <h:inputText id="x"
@@ -112,7 +94,6 @@
                                              label="X"
                                              autocomplete="off"
                                              placeholder="-3 … 3">
-                                    <!-- серверная валидация по диапазону -->
                                     <f:convertNumber type="number" locale="en_US"/>
                                     <f:validateDoubleRange minimum="-3" maximum="3"
                                                            validatorMessage="X должен быть числом в диапазоне -3 … 3"/>
@@ -120,7 +101,6 @@
                                 <h:message for="x" styleClass="error-msg" id="x-error"/>
                             </div>
 
-                            <!-- Y: p:slider (-4 … 4), шаг 0.1 -->
                             <div class="form-row">
                                 <h:outputLabel for="yInput" value="Y:"/>
 
@@ -151,12 +131,10 @@
 
                                   if (!slider || !yInput) return;
 
-                                  // начальное значение из бина (если есть), иначе 0
                                   const initial = yInput.value &amp;&amp; !isNaN(yInput.value) ? yInput.value : "0";
                                   slider.value = initial;
                                   yInput.value = Number(initial).toFixed(1);
 
-                                  // при движении слайдера обновляем поле
                                   slider.addEventListener("input", function () {
                                     const v = slider.value;
                                     yInput.value = Number(v).toFixed(1);
@@ -174,7 +152,6 @@
                                 }
                             </script>
 
-                            <!-- R: selectOneMenu { '1','2','3','4','5' } -->
                             <div class="form-row">
                                 <h:outputLabel for="r" value="R:"/>
                                 <h:selectOneMenu id="r"
@@ -221,7 +198,6 @@
                     </div>
                 </section>
 
-                <!-- Таблица истории -->
                 <section class="panel">
                     <h2>История проверок</h2>
 

@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const jsonHolder = document.getElementById("areaSvg:pointsJson");
     console.log(svg, layer, Rselect, jsonHolder);
 
-    // скрытая форма
     const xHidden = document.getElementById("svgX");
     const yHidden = document.getElementById("svgY");
     const rHidden = document.getElementById("svgR");
@@ -65,35 +64,25 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!ctm) return null;
         const svgPt = pt.matrixTransform(ctm.inverse());
 
-//        const rect = svg.getBoundingClientRect();
-//        const sx = evt.clientX - rect.left;
-//        const sy = evt.clientY - rect.top;
-        console.log(svgPt.clientX, svgPt.clientY);
-
         const k = r / SCALE ;
 
         const x = Number(((svgPt.x - CX) * k).toFixed(2));
         const y = Number(((CY - svgPt.y) * k).toFixed(2));
-        console.log(x, y);
 
-        // заполняем скрытую форму
         xHidden.value = x;
         yHidden.value = y;
         rHidden.value = r;
 
-        // запускаем AJAX
         submitBtn.click();
     });
 
     Rselect.addEventListener("change", redraw);
 
-    // после AJAX — перерисовать точки
     function onAjaxUpdate (data) {
         if (data.status === "success") {
             redraw();
         }
     };
 
-    // Первичная отрисовка
     redraw();
 });

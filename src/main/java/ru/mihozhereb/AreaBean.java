@@ -6,6 +6,7 @@ import jakarta.inject.Named;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.ServletContext;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.Map;
 @SessionScoped
 public class AreaBean implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private List<PointRecord> history;
@@ -83,29 +85,19 @@ public class AreaBean implements Serializable {
                 .getSessionId(true);
     }
 
-    // === НОВАЯ проверка попадания в область ===
-    // Под ту область, что мы рисовали в SVG:
-    // 1) четверть круга радиуса R во II четверти;
-    // 2) прямоугольник в III четверти: x∈[-R,0], y∈[-R/2,0];
-    // 3) треугольник в I четверти с вершинами (0,0), (R,0), (0,R).
-
     public boolean isHit(double x, double y, int r) {
         double R = r;
         double eps = 1e-9;
 
-        // 1) сектор круга во II четверти: x <= 0, y >= 0, x^2 + y^2 <= (R/2)^2
         boolean inCircleSector =
                 x <= 0 + eps &&
                         y >= 0 - eps &&
                         (x * x + y * y <= R / 2 * R / 2 + eps);
 
-        // 2) прямоугольник в III четверти: x ∈ [-R,0], y ∈ [-R/2,0]
         boolean inRectangle =
                 x >= -R - eps && x <= 0 + eps &&
                         y <= 0 + eps && y >= -R / 2.0 - eps;
 
-        // 3) треугольник в I четверти (0,0)-(R,0)-(0,R)
-        // уравнение гипотенузы: y = -x + R
         boolean inTriangle =
                 x >= 0 - eps && y >= 0 - eps &&
                         x <= R + eps && y <= R + eps &&
