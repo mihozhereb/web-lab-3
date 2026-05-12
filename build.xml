@@ -270,4 +270,55 @@
         <echo message="WAR-архив отправлен по SCP."/>
     </target>
 
+    <target name="env" depends="check-deps,native2ascii">
+        <echo message="Сборка проекта в альтернативном окружении."/>
+        <echo message="JAVA_HOME окружения: ${env.java.home}"/>
+        <echo message="JVM arguments: ${env.jvm.args}"/>
+
+        <delete dir="${env.classes.dir}"/>
+        <mkdir dir="${env.classes.dir}"/>
+
+        <exec executable="${env.java.executable}" failonerror="true">
+            <arg line="${env.jvm.args}"/>
+            <arg value="-version"/>
+        </exec>
+
+        <javac srcdir="${src.dir}"
+               destdir="${env.classes.dir}"
+               release="${java.release}"
+               encoding="${encoding}"
+               includeAntRuntime="false"
+               fork="true"
+               executable="${env.javac.executable}"
+               debug="true">
+            <classpath refid="compile.classpath"/>
+        </javac>
+
+        <copy todir="${env.classes.dir}">
+            <fileset dir="${native.dir}">
+                <include name="**/*.properties"/>
+            </fileset>
+        </copy>
+
+        <war destfile="${env.war.file}"
+             webxml="${web.dir}/WEB-INF/web.xml"
+             manifest="${manifest.file}"
+             duplicate="preserve">
+
+            <fileset dir="${web.dir}">
+                <exclude name="WEB-INF/web.xml"/>
+            </fileset>
+
+            <classes dir="${env.classes.dir}"/>
+
+            <lib dir="${lib.dir}">
+                <include name="gson-${gson.version}.jar"/>
+                <include name="postgresql-${postgresql.version}.jar"/>
+                <include name="primefaces-${primefaces.version}-jakarta.jar"/>
+            </lib>
+        </war>
+
+        <echo message="WAR для альтернативного окружения создан: ${env.war.file}"/>
+    </target>
+
 </project>
