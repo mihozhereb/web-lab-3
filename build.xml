@@ -10,12 +10,27 @@
         </fileset>
     </path>
 
+    <path id="test.classpath">
+        <pathelement location="${classes.dir}"/>
+        <pathelement location="${test.classes.dir}"/>
+
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
     <target name="init">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${classes.dir}"/>
         <mkdir dir="${dist.dir}"/>
         <mkdir dir="${lib.dir}"/>
         <mkdir dir="${native.dir}"/>
+        <mkdir dir="${test.classes.dir}"/>
+        <mkdir dir="${test.reports.dir}"/>
+        <mkdir dir="${env.classes.dir}"/>
+        <mkdir dir="${alt.classes.dir}"/>
+        <mkdir dir="${history.dir}"/>
+        <mkdir dir="${team.dir}"/>
     </target>
 
     <target name="download-deps" depends="init">
@@ -160,6 +175,86 @@
         <sound>
             <success source="${success.sound}"/>
         </sound>
+    </target>
+
+    <target name="download-test-deps" depends="download-deps">
+        <get src="${junit.jupiter.api.url}"
+             dest="${lib.dir}/junit-jupiter-api-${junit.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${junit.jupiter.engine.url}"
+             dest="${lib.dir}/junit-jupiter-engine-${junit.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${junit.jupiter.params.url}"
+             dest="${lib.dir}/junit-jupiter-params-${junit.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${junit.platform.commons.url}"
+             dest="${lib.dir}/junit-platform-commons-${junit.platform.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${junit.platform.engine.url}"
+             dest="${lib.dir}/junit-platform-engine-${junit.platform.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${junit.platform.launcher.url}"
+             dest="${lib.dir}/junit-platform-launcher-${junit.platform.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${opentest4j.url}"
+             dest="${lib.dir}/opentest4j-${opentest4j.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${apiguardian.url}"
+             dest="${lib.dir}/apiguardian-api-${apiguardian.version}.jar"
+             usetimestamp="true"/>
+    </target>
+
+    <target name="detect-tests">
+        <available file="${test.src.dir}" type="dir" property="tests.present"/>
+    </target>
+
+    <target name="compile-tests" depends="build,download-test-deps,detect-tests" if="tests.present">
+        <echo message="Компиляция JUnit-тестов..."/>
+
+        <javac srcdir="${test.src.dir}"
+               destdir="${test.classes.dir}"
+               release="${java.release}"
+               encoding="${encoding}"
+               includeAntRuntime="false"
+               debug="true">
+            <classpath refid="test.classpath"/>
+        </javac>
+    </target>
+
+    <target name="test-no-sources" depends="build,detect-tests" unless="tests.present">
+        <echo message="Папка ${test.src.dir} не найдена. JUnit-тесты отсутствуют."/>
+    </target>
+
+    <target name="run-tests" depends="compile-tests" if="tests.present">
+        <echo message="Запуск JUnit-тестов..."/>
+
+        <junitlauncher haltOnFailure="true" printSummary="true">
+            <classpath refid="test.classpath"/>
+
+            <testclasses outputdir="${test.reports.dir}">
+                <fileset dir="${test.classes.dir}">
+                    <include name="**/*Test.class"/>
+                    <include name="**/*Tests.class"/>
+                </fileset>
+
+                <listener type="legacy-xml"
+                          sendSysOut="true"
+                          sendSysErr="true"/>
+            </testclasses>
+        </junitlauncher>
+
+        <echo message="JUnit-тесты завершены. Отчёты: ${test.reports.dir}"/>
+    </target>
+
+    <target name="test" depends="build,test-no-sources,run-tests">
+        <echo message="Цель test завершена."/>
     </target>
 
 </project>
