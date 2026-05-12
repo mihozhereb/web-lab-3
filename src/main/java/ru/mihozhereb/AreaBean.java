@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Named
 @SessionScoped
-public class AreaBean implements Serializabledchjkljzdcbhlhbjcfbhhbjfd {
+public class AreaBean implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
