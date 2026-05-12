@@ -4,6 +4,14 @@
 
     <property file="build.properties"/>
 
+    <condition property="is.windows">
+        <os family="windows"/>
+    </condition>
+
+    <condition property="is.unix">
+        <os family="unix"/>
+    </condition>
+
     <path id="compile.classpath">
         <fileset dir="${lib.dir}">
             <include name="*.jar"/>
@@ -401,6 +409,68 @@
         </war>
 
         <echo message="Альтернативная версия собрана: ${alt.war.file}"/>
+    </target>
+
+    <target name="history" depends="history-windows,history-unix">
+        <echo message="Проверка истории завершена. Результаты: ${history.dir}"/>
+    </target>
+
+    <target name="history-windows" if="is.windows">
+        <echo message="Запуск проверки истории git через PowerShell..."/>
+
+        <exec executable="powershell" failonerror="true">
+            <arg value="-ExecutionPolicy"/>
+            <arg value="Bypass"/>
+            <arg value="-File"/>
+            <arg value="${history.script.windows}"/>
+            <arg value="-AntCmd"/>
+            <arg value="./ant.bat"/>
+            <arg value="-ResultDir"/>
+            <arg value="${history.dir}"/>
+        </exec>
+    </target>
+
+    <target name="history-unix" if="is.unix">
+        <echo message="Запуск проверки истории git через shell..."/>
+
+        <chmod file="${history.script.unix}" perm="755"/>
+
+        <exec executable="sh" failonerror="true">
+            <arg value="${history.script.unix}"/>
+            <arg value="./ant"/>
+            <arg value="${history.dir}"/>
+        </exec>
+    </target>
+
+    <target name="team" depends="team-windows,team-unix">
+        <echo message="Сборка team завершена. Результаты: ${team.dir}"/>
+    </target>
+
+    <target name="team-windows" if="is.windows">
+        <echo message="Сборка двух предыдущих ревизий через PowerShell..."/>
+
+        <exec executable="powershell" failonerror="true">
+            <arg value="-ExecutionPolicy"/>
+            <arg value="Bypass"/>
+            <arg value="-File"/>
+            <arg value="${team.script.windows}"/>
+            <arg value="-AntCmd"/>
+            <arg value="./ant.bat"/>
+            <arg value="-ResultDir"/>
+            <arg value="${team.dir}"/>
+        </exec>
+    </target>
+
+    <target name="team-unix" if="is.unix">
+        <echo message="Сборка двух предыдущих ревизий через shell..."/>
+
+        <chmod file="${team.script.unix}" perm="755"/>
+
+        <exec executable="sh" failonerror="true">
+            <arg value="${team.script.unix}"/>
+            <arg value="./ant"/>
+            <arg value="${team.dir}"/>
+        </exec>
     </target>
 
 </project>
