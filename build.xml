@@ -321,4 +321,86 @@
         <echo message="WAR для альтернативного окружения создан: ${env.war.file}"/>
     </target>
 
+    <target name="alt" depends="check-deps,native2ascii">
+        <echo message="Создание альтернативной версии проекта..."/>
+
+        <delete dir="${alt.dir}"/>
+        <delete dir="${alt.classes.dir}"/>
+
+        <mkdir dir="${alt.src.dir}"/>
+        <mkdir dir="${alt.web.dir}"/>
+        <mkdir dir="${alt.classes.dir}"/>
+
+        <copy todir="${alt.src.dir}">
+            <fileset dir="${src.dir}"/>
+        </copy>
+
+        <copy todir="${alt.web.dir}">
+            <fileset dir="${web.dir}"/>
+        </copy>
+
+        <replace dir="${alt.src.dir}" encoding="${encoding}">
+            <include name="**/*.java"/>
+
+            <replacefilter token="AreaBean" value="${alt.area.bean}"/>
+            <replacefilter token="ClockBean" value="${alt.clock.bean}"/>
+            <replacefilter token="PointRecord" value="${alt.point.record}"/>
+            <replacefilter token="PointsRepository" value="${alt.points.repository}"/>
+        </replace>
+
+        <replace dir="${alt.web.dir}" encoding="${encoding}">
+            <include name="**/*.xhtml"/>
+
+            <replacefilter token="areaBean" value="${alt.area.bean.var}"/>
+            <replacefilter token="clockBean" value="${alt.clock.bean.var}"/>
+        </replace>
+
+        <move file="${alt.src.dir}/ru/mihozhereb/AreaBean.java"
+              tofile="${alt.src.dir}/ru/mihozhereb/${alt.area.bean}.java"/>
+
+        <move file="${alt.src.dir}/ru/mihozhereb/ClockBean.java"
+              tofile="${alt.src.dir}/ru/mihozhereb/${alt.clock.bean}.java"/>
+
+        <move file="${alt.src.dir}/ru/mihozhereb/PointRecord.java"
+              tofile="${alt.src.dir}/ru/mihozhereb/${alt.point.record}.java"/>
+
+        <move file="${alt.src.dir}/ru/mihozhereb/PointsRepository.java"
+              tofile="${alt.src.dir}/ru/mihozhereb/${alt.points.repository}.java"/>
+
+        <javac srcdir="${alt.src.dir}"
+               destdir="${alt.classes.dir}"
+               release="${java.release}"
+               encoding="${encoding}"
+               includeAntRuntime="false"
+               debug="true">
+            <classpath refid="compile.classpath"/>
+        </javac>
+
+        <copy todir="${alt.classes.dir}">
+            <fileset dir="${native.dir}">
+                <include name="**/*.properties"/>
+            </fileset>
+        </copy>
+
+        <war destfile="${alt.war.file}"
+             webxml="${alt.web.dir}/WEB-INF/web.xml"
+             manifest="${manifest.file}"
+             duplicate="preserve">
+
+            <fileset dir="${alt.web.dir}">
+                <exclude name="WEB-INF/web.xml"/>
+            </fileset>
+
+            <classes dir="${alt.classes.dir}"/>
+
+            <lib dir="${lib.dir}">
+                <include name="gson-${gson.version}.jar"/>
+                <include name="postgresql-${postgresql.version}.jar"/>
+                <include name="primefaces-${primefaces.version}-jakarta.jar"/>
+            </lib>
+        </war>
+
+        <echo message="Альтернативная версия собрана: ${alt.war.file}"/>
+    </target>
+
 </project>
