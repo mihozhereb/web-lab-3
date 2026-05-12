@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="web-lab-3" default="build" basedir=".">
+
+    <property file="build.properties"/>
+
+    <path id="compile.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${lib.dir}"/>
+    </target>
+
+    <target name="download-deps" depends="init">
+        <get src="${jakarta.url}"
+             dest="${lib.dir}/jakarta.jakartaee-web-api-${jakarta.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${gson.url}"
+             dest="${lib.dir}/gson-${gson.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${postgresql.url}"
+             dest="${lib.dir}/postgresql-${postgresql.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${primefaces.url}"
+             dest="${lib.dir}/primefaces-${primefaces.version}-jakarta.jar"
+             usetimestamp="true"/>
+
+        <get src="${servlet.url}"
+             dest="${lib.dir}/jakarta.servlet-api-${servlet.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${faces.url}"
+             dest="${lib.dir}/jakarta.faces-api-${faces.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${cdi.url}"
+             dest="${lib.dir}/jakarta.enterprise.cdi-api-${cdi.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${inject.url}"
+             dest="${lib.dir}/jakarta.inject-api-${inject.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${annotation.url}"
+             dest="${lib.dir}/jakarta.annotation-api-${annotation.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${el.url}"
+             dest="${lib.dir}/jakarta.el-api-${el.version}.jar"
+             usetimestamp="true"/>
+
+        <get src="${interceptor.url}"
+             dest="${lib.dir}/jakarta.interceptor-api-${interceptor.version}.jar"
+             usetimestamp="true"/>
+    </target>
+
+    <target name="check-deps" depends="download-deps">
+        <available file="${lib.dir}/jakarta.jakartaee-web-api-${jakarta.version}.jar"
+                   property="jakarta.present"/>
+
+        <fail unless="jakarta.present"
+              message="Не найден Jakarta EE API: ${lib.dir}/jakarta.jakartaee-web-api-${jakarta.version}.jar"/>
+
+        <pathconvert property="compile.classpath.print"
+                     refid="compile.classpath"
+                     pathsep="${line.separator}"/>
+
+        <echo message="Classpath для компиляции:"/>
+        <echo message="${compile.classpath.print}"/>
+    </target>
+
+    <target name="compile" depends="check-deps">
+        <echo message="Компиляция исходных файлов проекта..."/>
+
+        <javac srcdir="${src.dir}"
+               destdir="${classes.dir}"
+               release="${java.release}"
+               encoding="${encoding}"
+               includeAntRuntime="false"
+               debug="true">
+            <classpath refid="compile.classpath"/>
+        </javac>
+    </target>
+
+    <target name="build" depends="compile">
+        <echo message="Сборка WAR-архива ${war.file}..."/>
+
+        <war destfile="${war.file}"
+             webxml="${web.dir}/WEB-INF/web.xml"
+             manifest="${manifest.file}"
+             duplicate="preserve">
+
+            <fileset dir="${web.dir}">
+                <exclude name="WEB-INF/web.xml"/>
+            </fileset>
+
+            <classes dir="${classes.dir}"/>
+
+            <lib dir="${lib.dir}">
+                <include name="gson-${gson.version}.jar"/>
+                <include name="postgresql-${postgresql.version}.jar"/>
+                <include name="primefaces-${primefaces.version}-jakarta.jar"/>
+            </lib>
+        </war>
+
+        <echo message="Готово: ${war.file}"/>
+    </target>
+
+    <target name="clean">
+        <echo message="Очистка результатов сборки..."/>
+
+        <delete dir="${build.dir}"/>
+
+        <echo message="Очистка завершена."/>
+    </target>
+
+    <target name="xml">
+        <echo message="Проверка XML и XHTML файлов проекта..."/>
+
+        <xmlvalidate failonerror="true" lenient="true">
+            <fileset dir="${web.dir}">
+                <include name="**/*.xml"/>
+                <include name="**/*.xhtml"/>
+            </fileset>
+        </xmlvalidate>
+
+        <echo message="XML/XHTML файлы корректны."/>
+    </target>
+
+</project>

@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Implementation-Title: web-lab-3
+Implementation-Version: 1.0
+Main-Class: ru.mihozhereb.AreaBean
