@@ -15,6 +15,7 @@
         <mkdir dir="${classes.dir}"/>
         <mkdir dir="${dist.dir}"/>
         <mkdir dir="${lib.dir}"/>
+        <mkdir dir="${native.dir}"/>
     </target>
 
     <target name="download-deps" depends="init">
@@ -78,7 +79,24 @@
         <echo message="${compile.classpath.print}"/>
     </target>
 
-    <target name="compile" depends="check-deps">
+    <target name="native2ascii" depends="init">
+        <echo message="Преобразование файлов локализации native2ascii..."/>
+
+        <native2ascii src="${resources.dir}"
+                      dest="${native.dir}"
+                      encoding="UTF-8"
+                      includes="**/*.properties"/>
+
+        <copy todir="${classes.dir}">
+            <fileset dir="${native.dir}">
+                <include name="**/*.properties"/>
+            </fileset>
+        </copy>
+
+        <echo message="Файлы локализации преобразованы и скопированы в ${classes.dir}"/>
+    </target>
+
+    <target name="compile" depends="check-deps,native2ascii">
         <echo message="Компиляция исходных файлов проекта..."/>
 
         <javac srcdir="${src.dir}"
