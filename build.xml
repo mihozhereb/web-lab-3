@@ -102,7 +102,7 @@
         <echo message="${compile.classpath.print}"/>
     </target>
 
-    <target name="native2ascii" depends="init">
+    <target name="native2ascii" depends="init" description="Преобразовать файлы локализации в ASCII">
         <echo message="Преобразование файлов локализации native2ascii..."/>
 
         <native2ascii src="${resources.dir}"
@@ -119,7 +119,7 @@
         <echo message="Файлы локализации преобразованы и скопированы в ${classes.dir}"/>
     </target>
 
-    <target name="compile" depends="check-deps,native2ascii">
+    <target name="compile" depends="check-deps,native2ascii" description="Скомпилировать исходный код проекта">
         <echo message="Компиляция исходных файлов проекта..."/>
 
         <javac srcdir="${src.dir}"
@@ -132,7 +132,7 @@
         </javac>
     </target>
 
-    <target name="build" depends="compile">
+    <target name="build" depends="compile" description="Собрать WAR-архив проекта">
         <echo message="Сборка WAR-архива ${war.file}..."/>
 
         <war destfile="${war.file}"
@@ -156,7 +156,7 @@
         <echo message="Готово: ${war.file}"/>
     </target>
 
-    <target name="clean">
+    <target name="clean" description="Удалить результаты сборки Ant">
         <echo message="Очистка результатов сборки..."/>
 
         <delete dir="${build.dir}"/>
@@ -164,7 +164,7 @@
         <echo message="Очистка завершена."/>
     </target>
 
-    <target name="xml">
+    <target name="xml" description="Проверить XML/XHTML-файлы проекта">
         <echo message="Проверка XML и XHTML файлов проекта..."/>
 
         <xmlvalidate failonerror="true" lenient="true">
@@ -177,7 +177,7 @@
         <echo message="XML/XHTML файлы корректны."/>
     </target>
 
-    <target name="music" depends="build">
+    <target name="music" depends="build" description="Собрать проект и проиграть звук после успешной сборки">
         <echo message="Сборка завершена успешно. Проигрывание звука..."/>
 
         <sound>
@@ -261,13 +261,13 @@
         <echo message="JUnit-тесты завершены. Отчёты: ${test.reports.dir}"/>
     </target>
 
-    <target name="test" depends="build,test-no-sources,run-tests">
+    <target name="test" depends="build,test-no-sources,run-tests" description="Собрать проект и запустить JUnit-тесты">
         <echo message="Цель test завершена."/>
     </target>
 
 <!--  ssh-keygen -t ed25519 -C "opi-lab-3"  -->
 <!--  echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... opi-lab-3' >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys  -->
-    <target name="scp" depends="build">
+    <target name="scp" depends="build" description="Отправить WAR-архив на сервер по SCP">
         <exec executable="${scp.command}" failonerror="true">
             <arg value="-P"/>
             <arg value="${scp.port}"/>
@@ -278,7 +278,7 @@
         <echo message="WAR-архив отправлен по SCP."/>
     </target>
 
-    <target name="env" depends="check-deps,native2ascii">
+    <target name="env" depends="check-deps,native2ascii" description="Собрать проект в альтернативном окружении Java">
         <echo message="Сборка проекта в альтернативном окружении."/>
         <echo message="JAVA_HOME окружения: ${env.java.home}"/>
         <echo message="JVM arguments: ${env.jvm.args}"/>
@@ -329,7 +329,7 @@
         <echo message="WAR для альтернативного окружения создан: ${env.war.file}"/>
     </target>
 
-    <target name="alt" depends="check-deps,native2ascii">
+    <target name="alt" depends="check-deps,native2ascii" description="Создать и собрать альтернативную версию проекта">
         <echo message="Создание альтернативной версии проекта..."/>
 
         <delete dir="${alt.dir}"/>
@@ -411,7 +411,7 @@
         <echo message="Альтернативная версия собрана: ${alt.war.file}"/>
     </target>
 
-    <target name="history" depends="history-windows,history-unix">
+    <target name="history" depends="history-windows,history-unix" description="Найти последнюю компилируемую ревизию в истории Git">
         <echo message="Проверка истории завершена. Результаты: ${history.dir}"/>
     </target>
 
@@ -442,7 +442,7 @@
         </exec>
     </target>
 
-    <target name="team" depends="team-windows,team-unix">
+    <target name="team" depends="team-windows,team-unix" description="Собрать две предыдущие ревизии и упаковать их в ZIP">
         <echo message="Сборка team завершена. Результаты: ${team.dir}"/>
     </target>
 
