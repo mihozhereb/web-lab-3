@@ -154,4 +154,12 @@
         <echo message="XML/XHTML файлы корректны."/>
     </target>
 
+    <target name="music" depends="build">
+        <echo message="Сборка завершена успешно. Проигрывание звука..."/>
+
+        <sound>
+            <success source="${success.sound}"/>
+        </sound>
+    </target>
+
 </project>
