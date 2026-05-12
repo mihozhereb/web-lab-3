@@ -257,4 +257,17 @@
         <echo message="Цель test завершена."/>
     </target>
 
+<!--  ssh-keygen -t ed25519 -C "opi-lab-3"  -->
+<!--  echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... opi-lab-3' >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys  -->
+    <target name="scp" depends="build">
+        <exec executable="${scp.command}" failonerror="true">
+            <arg value="-P"/>
+            <arg value="${scp.port}"/>
+            <arg value="${war.file}"/>
+            <arg value="${scp.user}@${scp.host}:${scp.remote.dir}/${war.name}"/>
+        </exec>
+
+        <echo message="WAR-архив отправлен по SCP."/>
+    </target>
+
 </project>
