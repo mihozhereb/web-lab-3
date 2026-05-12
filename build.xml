@@ -230,6 +230,7 @@
                destdir="${test.classes.dir}"
                release="${java.release}"
                encoding="${encoding}"
+               nowarn="true"
                includeAntRuntime="false"
                debug="true">
             <classpath refid="test.classpath"/>
