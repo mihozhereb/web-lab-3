@@ -40,4 +40,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
 port.bat
+build-ant/
+!apache-ant/bin/
