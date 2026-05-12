@@ -4,53 +4,56 @@
       xmlns:f="jakarta.faces.core"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
-    <f:view>
-        <h:head>
-            <meta charset="UTF-8" />
-            <title>Проверка попадания точки</title>
-            <link rel="stylesheet" type="text/css" href="resources/styles/styles.css" />
-            <h:outputScript library="js" name="area-svg.js" target="body"/>
-        </h:head>
+<f:view locale="ru">
+    <h:head>
+        <meta charset="UTF-8" />
+        <title>#{msg['app.title']}</title>
+        <link rel="stylesheet" type="text/css" href="resources/styles/styles.css" />
+        <h:outputScript library="js" name="area-svg.js" target="body"/>
+    </h:head>
 
-        <h:body>
-            <header id="header">
-                <div class="wrap">
-                    <h1>Жеребцов Михаил Александрович — Группа P3217 — Вариант 3910</h1>
-                </div>
-            </header>
+    <h:body>
+        <header id="header">
+            <div class="wrap">
+                <h1>#{msg['app.student']}</h1>
+            </div>
+        </header>
 
-            <main class="wrap">
-                <section class="layout">
-                    <div class="panel">
-                        <h2>Область</h2>
+        <main class="wrap">
+            <section class="layout">
+                <div class="panel">
+                    <h2>#{msg['check.area.title']}</h2>
 
-                        <h:form id="areaSvg">
-                            <figure class="area-figure">
-                                <svg id="svgInput" class="area-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="График области">
-                                    <defs>
-                                        <style>
-                                            .axis { stroke:#111; stroke-width:2; }
-                                            .tick { stroke:#111; stroke-width:1.2; }
-                                            .label { font: 12px system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; fill:#111; }
-                                            .region { fill:#4ea6ff; stroke:none; }
-                                        </style>
-                                    </defs>
+                    <h:form id="areaSvg">
+                        <figure class="area-figure">
+                            <svg id="svgInput"
+                                 class="area-svg"
+                                 viewBox="0 0 400 400"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 role="img"
+                                 aria-label="#{msg['check.area.aria']}">
+                                <defs>
+                                    <style>
+                                        .axis { stroke:#111; stroke-width:2; }
+                                        .tick { stroke:#111; stroke-width:1.2; }
+                                        .label { font: 12px system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; fill:#111; }
+                                        .region { fill:#4ea6ff; stroke:none; }
+                                    </style>
+                                </defs>
 
-                                    <g>
-                                        <rect class="region" x="80" y="200" width="120" height="60"/>
+                                <g>
+                                    <rect class="region" x="80" y="200" width="120" height="60"/>
+                                    <polygon class="region" points="200,200 320,200 200,80"/>
+                                    <path class="region" d="M200,200 L140,200 A60,60 0 0 1 200,140 Z"/>
+                                </g>
 
-                                        <polygon class="region" points="200,200 320,200 200,80"/>
-
-                                        <path class="region" d="M200,200 L140,200 A60,60 0 0 1 200,140 Z"/>
-                                    </g>
-
-                                    <g>
-                                        <line class="axis" x1="20" y1="200" x2="380" y2="200"/>
-                                        <path class="axis" d="M380,200 l-8,-4 l0,8 Z"/>
-                                        <text class="label" x="388" y="205">x</text>
-                                        <line class="axis" x1="200" y1="380" x2="200" y2="20"/>
-                                        <path class="axis" d="M200,20 l-4,8 l8,0 Z"/>
-                                        <text class="label" x="205" y="16">y</text>
+                                <g>
+                                    <line class="axis" x1="20" y1="200" x2="380" y2="200"/>
+                                    <path class="axis" d="M380,200 l-8,-4 l0,8 Z"/>
+                                    <text class="label" x="388" y="205">x</text>
+                                    <line class="axis" x1="200" y1="380" x2="200" y2="20"/>
+                                    <path class="axis" d="M200,20 l-4,8 l8,0 Z"/>
+                                    <text class="label" x="205" y="16">y</text>
 
                                         <line class="tick" x1="80"  y1="195" x2="80"  y2="205"/><text class="label" x="72"  y="222">-R</text>
                                         <line class="tick" x1="140" y1="195" x2="140" y2="205"/><text class="label" x="120" y="222">-R/2</text>
@@ -63,204 +66,211 @@
                                         <line class="tick" x1="195" y1="320" x2="205" y2="320"/><text class="label" x="210" y="324">-R</text>
                                     </g>
 
-                                    <g id="pointsLayer"></g>
-                                </svg>
-                            </figure>
+                                <g id="pointsLayer"></g>
+                            </svg>
+                        </figure>
 
-                            <h:commandButton id="ajaxSend"
-                                             action="#{areaBean.checkPoint}"
-                                             style="display:none">
-                                <f:ajax execute="@this" render="historyTable pointPlot"/>
-                            </h:commandButton>
+                        <h:commandButton id="ajaxSend"
+                                         action="#{areaBean.checkPoint}"
+                                         style="display:none">
+                            <f:ajax execute="@this" render="historyTable pointPlot"/>
+                        </h:commandButton>
 
-                            <h:outputText id="pointsJson"
-                                          value="#{areaBean.pointsJson}"
-                                          escape="false"
-                                          style="display:none"/>
-                        </h:form>
-                    </div>
+                        <h:outputText id="pointsJson"
+                                      value="#{areaBean.pointsJson}"
+                                      escape="false"
+                                      style="display:none"/>
+                    </h:form>
+                </div>
 
-                    <div class="panel">
-                        <h2>Проверка точки</h2>
+                <div class="panel">
+                    <h2>#{msg['check.form.title']}</h2>
 
-                        <h:form id="pointForm">
-                            <div class="form-row">
-                                <h:outputLabel for="x" value="X:"/>
-                                <h:inputText id="x"
-                                             value="#{areaBean.x}"
-                                             styleClass="field"
-                                             title="X ∈ (-3; 3), десятичный разделитель — точка, до 2 знаков"
-                                             required="true"
-                                             label="X"
-                                             autocomplete="off"
-                                             placeholder="-3 … 3">
-                                    <f:convertNumber type="number" locale="en_US"/>
-                                    <f:validateDoubleRange minimum="-3" maximum="3"
-                                                           validatorMessage="X должен быть числом в диапазоне -3 … 3"/>
-                                </h:inputText>
-                                <h:message for="x" styleClass="error-msg" id="x-error"/>
-                            </div>
+                    <h:form id="pointForm">
+                        <div class="form-row">
+                            <h:outputLabel for="x" value="#{msg['check.form.x']}"/>
+                            <h:inputText id="x"
+                                         value="#{areaBean.x}"
+                                         styleClass="field"
+                                         title="#{msg['check.form.x.title']}"
+                                         required="true"
+                                         label="X"
+                                         autocomplete="off"
+                                         placeholder="-3 … 3">
+                                <f:convertNumber type="number" locale="en_US"/>
+                                <f:validateDoubleRange minimum="-3"
+                                                       maximum="3"
+                                                       validatorMessage="#{msg['check.validation.x.range']}"/>
+                            </h:inputText>
+                            <h:message for="x" styleClass="error-msg" id="x-error"/>
+                        </div>
 
-                            <div class="form-row">
-                                <h:outputLabel for="yInput" value="Y:"/>
+                        <div class="form-row">
+                            <h:outputLabel for="yInput" value="#{msg['check.form.y']}"/>
 
-                                <input type="range"
-                                       id="ySlider"
-                                       min="-4"
-                                       max="4"
-                                       step="0.1"
-                                       class="y-range"/>
+                            <input type="range"
+                                   id="ySlider"
+                                   min="-4"
+                                   max="4"
+                                   step="0.1"
+                                   class="y-range"/>
 
-                                <h:inputText id="yInput"
-                                             value="#{areaBean.y}"
-                                             onkeydown="return false"
-                                             onpaste="return false"
-                                             styleClass="y-value">
-                                    <f:convertNumber type="number"
-                                                     locale="en_US"
-                                                     minFractionDigits="1"
-                                                     maxFractionDigits="1"/>
-                                </h:inputText>
-                                <h:message for="yInput" styleClass="error-msg"/>
-                            </div>
+                            <h:inputText id="yInput"
+                                         value="#{areaBean.y}"
+                                         onkeydown="return false"
+                                         onpaste="return false"
+                                         styleClass="y-value">
+                                <f:convertNumber type="number"
+                                                 locale="en_US"
+                                                 minFractionDigits="1"
+                                                 maxFractionDigits="1"/>
+                            </h:inputText>
+                            <h:message for="yInput" styleClass="error-msg"/>
+                        </div>
 
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-                                  const slider  = document.getElementById("ySlider");
-                                  const yInput  = document.getElementById("pointForm:yInput");
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const slider = document.getElementById("ySlider");
+                                const yInput = document.getElementById("pointForm:yInput");
 
-                                  if (!slider || !yInput) return;
+                                if (!slider || !yInput) return;
 
-                                  const initial = yInput.value &amp;&amp; !isNaN(yInput.value) ? yInput.value : "0";
-                                  slider.value = initial;
-                                  yInput.value = Number(initial).toFixed(1);
+                                const initial = yInput.value &amp;&amp; !isNaN(yInput.value) ? yInput.value : "0";
+                                slider.value = initial;
+                                yInput.value = Number(initial).toFixed(1);
 
-                                  slider.addEventListener("input", function () {
+                                slider.addEventListener("input", function () {
                                     const v = slider.value;
                                     yInput.value = Number(v).toFixed(1);
-                                  });
                                 });
+                            });
 
-                                function resetY() {
-                                    const yInput = document.getElementById("pointForm:yInput");
-                                    const xInput = document.getElementById("pointForm:x");
-                                    const slider = document.getElementById("ySlider");
+                            function resetY() {
+                                const yInput = document.getElementById("pointForm:yInput");
+                                const xInput = document.getElementById("pointForm:x");
+                                const slider = document.getElementById("ySlider");
 
-                                    if (yInput) yInput.value = "0.0";
-                                    if (xInput) xInput.value = null;
-                                    if (slider) slider.value = "0";
-                                }
-                            </script>
+                                if (yInput) yInput.value = "0.0";
+                                if (xInput) xInput.value = null;
+                                if (slider) slider.value = "0";
+                            }
+                        </script>
 
-                            <div class="form-row">
-                                <h:outputLabel for="r" value="R:"/>
-                                <h:selectOneMenu id="r"
-                                                 value="#{areaBean.r}"
-                                                 styleClass="field"
-                                                 required="true"
-                                                 label="R"
-                                                 requiredMessage="Выберите R от 1 до 5">
-                                    <f:selectItem itemValue="1" itemLabel="1"/>
-                                    <f:selectItem itemValue="2" itemLabel="2"/>
-                                    <f:selectItem itemValue="3" itemLabel="3"/>
-                                    <f:selectItem itemValue="4" itemLabel="4"/>
-                                    <f:selectItem itemValue="5" itemLabel="5"/>
-                                </h:selectOneMenu>
-                                <h:message for="r" styleClass="error-msg"/>
-                            </div>
-
-                            <div class="form-actions">
-                                <h:commandButton value="Проверить" action="#{areaBean.checkPoint}" styleClass="btn primary-btn">
-                                    <f:ajax execute="@form"
-                                            render="historyTable x-error pointsJson"
-                                            onevent="onAjaxUpdate"
-                                    />
-                                </h:commandButton>
-                                <button class="btn secondary-btn" onclick="resetY();">Очистить</button>
-                            </div>
-                        </h:form>
-
-                        <h:form id="svgForm" style="display:none" prependId="false">
-
-                            <h:inputHidden id="svgX" value="#{areaBean.x}" />
-                            <h:inputHidden id="svgY" value="#{areaBean.y}" />
-                            <h:inputHidden id="svgR" value="#{areaBean.r}" />
-
-                            <h:commandButton id="svgSubmit"
-                                             action="#{areaBean.checkPoint}"
-                                             style="display:none;">
-                                <f:ajax execute="svgX svgY svgR"
-                                        render="historyTable areaSvg pointsJson"
-                                        onevent="onAjaxUpdate" />
-                            </h:commandButton>
-
-                        </h:form>
-                    </div>
-                </section>
-
-                <section class="panel">
-                    <h2>История проверок</h2>
-
-                    <h:panelGroup id="historyTable">
-                        <div class="table-wrap">
-                            <table id="historyTable" class="table">
-                                <thead>
-                                <tr>
-                                    <th>X</th>
-                                    <th>Y</th>
-                                    <th>R</th>
-                                    <th>Попадание</th>
-                                    <th>Текущее время</th>
-                                    <th>Время работы, нс</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach items="#{areaBean.history}" var="rec">
-                                        <tr>
-                                            <td>
-                                                <h:outputText value="#{rec.x}">
-                                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" locale="en_US"/>
-                                                </h:outputText>
-                                            </td>
-                                            <td>
-                                                <h:outputText value="#{rec.y}">
-                                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" locale="en_US"/>
-                                                </h:outputText>
-                                            </td>
-                                            <td>#{rec.r}</td>
-                                            <td>#{rec.hit ? 'Да' : 'Нет'}</td>
-                                            <td>
-                                                <h:outputText value="#{rec.timeAsDate}">
-                                                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
-                                                </h:outputText>
-                                            </td>
-                                            <td>#{rec.timingMs}</td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
+                        <div class="form-row">
+                            <h:outputLabel for="r" value="#{msg['check.form.r']}"/>
+                            <h:selectOneMenu id="r"
+                                             value="#{areaBean.r}"
+                                             styleClass="field"
+                                             required="true"
+                                             label="R"
+                                             requiredMessage="#{msg['check.validation.r.required']}">
+                                <f:selectItem itemValue="1" itemLabel="1"/>
+                                <f:selectItem itemValue="2" itemLabel="2"/>
+                                <f:selectItem itemValue="3" itemLabel="3"/>
+                                <f:selectItem itemValue="4" itemLabel="4"/>
+                                <f:selectItem itemValue="5" itemLabel="5"/>
+                            </h:selectOneMenu>
+                            <h:message for="r" styleClass="error-msg"/>
                         </div>
-                    </h:panelGroup>
 
-                    <div class="history-actions">
-                        <h:form id="clearForm" prependId="false">
-                            <p:commandButton value="Очистить историю"
-                                             action="#{areaBean.clearHistory}"
-                                             update="historyTable areaSvg"
-                                             immediate="true"
-                                             ajax="true"
-                                             styleClass="btn-clear"
-                                             oncomplete="redraw();"/>
-                        </h:form>
+                        <div class="form-actions">
+                            <h:commandButton value="#{msg['check.button.check']}"
+                                             action="#{areaBean.checkPoint}"
+                                             styleClass="btn primary-btn">
+
+                                <f:ajax execute="@form"
+                                        render="historyTable x-error pointsJson"
+                                        onevent="onAjaxUpdate"/>
+                            </h:commandButton>
+                            <button type="button" class="btn secondary-btn" onclick="resetY();">
+                                #{msg['check.button.clear']}
+                            </button>
+                        </div>
+                    </h:form>
+
+                    <h:form id="svgForm" style="display:none" prependId="false">
+                        <h:inputHidden id="svgX" value="#{areaBean.x}" />
+                        <h:inputHidden id="svgY" value="#{areaBean.y}" />
+                        <h:inputHidden id="svgR" value="#{areaBean.r}" />
+
+                        <h:commandButton id="svgSubmit"
+                                         action="#{areaBean.checkPoint}"
+                                         style="display:none;">
+                            <f:ajax execute="svgX svgY svgR"
+                                    render="historyTable areaSvg pointsJson"
+                                    onevent="onAjaxUpdate" />
+                        </h:commandButton>
+                    </h:form>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>#{msg['check.history.title']}</h2>
+
+                <h:panelGroup id="historyTable">
+                    <div class="table-wrap">
+                        <table id="historyTable" class="table">
+                            <thead>
+                            <tr>
+                                <th>#{msg['check.table.x']}</th>
+                                <th>#{msg['check.table.y']}</th>
+                                <th>#{msg['check.table.r']}</th>
+                                <th>#{msg['check.table.hit']}</th>
+                                <th>#{msg['check.table.time']}</th>
+                                <th>#{msg['check.table.worktime']}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="#{areaBean.history}" var="rec">
+                                <tr>
+                                    <td>
+                                        <h:outputText value="#{rec.x}">
+                                            <f:convertNumber minFractionDigits="2"
+                                                             maxFractionDigits="2"
+                                                             locale="en_US"/>
+                                        </h:outputText>
+                                    </td>
+                                    <td>
+                                        <h:outputText value="#{rec.y}">
+                                            <f:convertNumber minFractionDigits="2"
+                                                             maxFractionDigits="2"
+                                                             locale="en_US"/>
+                                        </h:outputText>
+                                    </td>
+                                    <td>#{rec.r}</td>
+                                    <td>#{rec.hit ? msg['check.hit.yes'] : msg['check.hit.no']}</td>
+                                    <td>
+                                        <h:outputText value="#{rec.timeAsDate}">
+                                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                                        </h:outputText>
+                                    </td>
+                                    <td>#{rec.timingMs}</td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
                     </div>
-                </section>
+                </h:panelGroup>
 
-                <section class="panel">
-                    <h:link outcome="backPage" styleClass="app-link">
-                        Перейти к стартовой странице приложения
-                    </h:link>
-                </section>
-            </main>
-        </h:body>
-    </f:view>
+                <div class="history-actions">
+                    <h:form id="clearForm" prependId="false">
+                        <p:commandButton value="#{msg['check.history.clear']}"
+                                         action="#{areaBean.clearHistory}"
+                                         update="historyTable areaSvg"
+                                         immediate="true"
+                                         ajax="true"
+                                         styleClass="btn-clear"
+                                         oncomplete="redraw();"/>
+                    </h:form>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h:link outcome="backPage" styleClass="app-link">
+                    #{msg['check.to.start']}
+                </h:link>
+            </section>
+        </main>
+    </h:body>
+</f:view>
 </html>

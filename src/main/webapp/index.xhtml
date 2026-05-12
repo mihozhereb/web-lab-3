@@ -5,26 +5,26 @@
       xmlns:f="jakarta.faces.core"
       xmlns:p="http://primefaces.org/ui">
 
-<f:view>
+<f:view locale="ru">
     <h:head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Проверка попадания точки</title>
+        <title>#{msg['app.title']}</title>
         <link rel="stylesheet" href="resources/styles/styles.css"/>
     </h:head>
 
     <h:body>
         <header id="header">
             <div class="wrap">
-                <h1>Жеребцов Михаил Александрович — Группа P3217 — Вариант 3910</h1>
+                <h1>#{msg['app.student']}</h1>
             </div>
         </header>
 
         <main class="wrap">
             <section class="panel">
-                <h2>Интерактивные часы</h2>
+                <h2>#{msg['index.clock.title']}</h2>
                 <div class="clock-panel-body">
-                    <div>Текущие дата и время (обновление раз в 11 секунд):</div>
+                    <div>#{msg['index.clock.description']}</div>
                     <div class="clock-time">
                         <h:outputText id="clock" value="#{clockBean.now}" />
                         <p:poll interval="11" update="clock"/>
@@ -34,11 +34,10 @@
 
             <section class="panel">
                 <h:link outcome="nextPage" styleClass="app-link">
-                    Перейти к основной странице приложения
+                    #{msg['index.to.main']}
                 </h:link>
             </section>
         </main>
-
     </h:body>
 </f:view>
 
